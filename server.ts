@@ -6,7 +6,7 @@ import multer from "multer";
 import { PDFParse } from "pdf-parse";
 import { GoogleGenAI, Type, Modality } from "@google/genai";
 import dns from "dns";
-
+import "dotenv/config";
 // Support Node standard port 3000
 const PORT = 3000;
 const app = express();
