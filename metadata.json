@@ -1,0 +1,6 @@
+{
+  "name": "AI Study Buddy",
+  "description": "A modern, AI-powered study companion that helps students learn from PDFs and notes through chat, summaries, quizzes, voice interaction, and flashcards.",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
