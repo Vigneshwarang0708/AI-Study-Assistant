@@ -36,7 +36,10 @@ const upload = multer({
 });
 
 // Create persistent folders if they don't exist
-const DATA_DIR = path.join(process.cwd(), "data");
+const VERCEL_ENV = process.env.VERCEL ? true : false;
+const DATA_DIR_SRC = path.join(process.cwd(), "data");
+const DATA_DIR = VERCEL_ENV ? path.join("/tmp", "data") : DATA_DIR_SRC;
+
 if (!fs.existsSync(DATA_DIR)) {
   fs.mkdirSync(DATA_DIR, { recursive: true });
 }
@@ -52,10 +55,25 @@ const DB_PATHS = {
   chats: path.join(DATA_DIR, "chats.json"),
 };
 
-// Initialize DB files
+// Initialize DB files & copy pre-seeded items for Vercel
 Object.entries(DB_PATHS).forEach(([key, filePath]) => {
-  if (!fs.existsSync(filePath)) {
-    fs.writeFileSync(filePath, JSON.stringify({}, null, 2));
+  if (VERCEL_ENV) {
+    const srcPath = path.join(DATA_DIR_SRC, `${key}.json`);
+    if (!fs.existsSync(filePath)) {
+      if (fs.existsSync(srcPath)) {
+        try {
+          fs.copyFileSync(srcPath, filePath);
+        } catch (e) {
+          fs.writeFileSync(filePath, JSON.stringify({}, null, 2));
+        }
+      } else {
+        fs.writeFileSync(filePath, JSON.stringify({}, null, 2));
+      }
+    }
+  } else {
+    if (!fs.existsSync(filePath)) {
+      fs.writeFileSync(filePath, JSON.stringify({}, null, 2));
+    }
   }
 });
 
@@ -906,4 +924,8 @@ async function startServer() {
   });
 }
 
-startServer();
+if (!process.env.VERCEL) {
+  startServer();
+}
+
+export default app;
