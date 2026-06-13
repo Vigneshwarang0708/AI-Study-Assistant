@@ -420,7 +420,7 @@ app.post("/api/study/summarize", async (req, res) => {
     `;
 
     const response = await ai.models.generateContent({
-      model: "gemini-3.5-flash",
+      model: "gemini-2.5-flash",
       contents: prompt,
       config: {
         systemInstruction: "You are an expert academic curriculum designer and summary generator. Take study notes or textbooks and output extremely detailed, accurate summaries includingshort summary, detailed summary, key concepts, detailed definitions, important exam notes, and core formulas (with details and explanation). Generate all fields based on the provided material.",
@@ -541,7 +541,7 @@ app.post("/api/study/quiz", async (req, res) => {
     `;
 
     const response = await ai.models.generateContent({
-      model: "gemini-3.5-flash",
+      model: "gemini-2.5-flash",
       contents: prompt,
       config: {
         systemInstruction: "You are an expert exam designer. Task: Create the academic quiz content in structured JSON as requested. Every question must have an ID, type, question body, correctAnswer, and comprehensive explanation.",
@@ -620,7 +620,7 @@ app.post("/api/study/flashcards", async (req, res) => {
     `;
 
     const response = await ai.models.generateContent({
-      model: "gemini-3.5-flash",
+      model: "gemini-2.5-flash",
       contents: prompt,
       config: {
         systemInstruction: "You are a professional deck builder for study systems like Anki. Your job is to create smart, active-recall flashcard questions and answers in JSON format.",
@@ -748,7 +748,7 @@ app.post("/api/study/chat", async (req, res) => {
     `;
 
     const response = await ai.models.generateContent({
-      model: "gemini-3.5-flash",
+      model: "gemini-2.5-flash",
       contents: prompt,
       config: {
         systemInstruction: "You are an elite, patient AI Tutor who guides students. Answer questions precisely, referencing details from the text context, and support with educational summaries, steps, and key findings. Keep responses friendly and markdown-based.",
