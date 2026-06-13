@@ -9,10 +9,9 @@ interface ProfileViewProps {
   user: UserProfile;
   analytics: LearningAnalytics | null;
   onNavigateHome: () => void;
-  onLogout: () => void;
 }
 
-export default function ProfileView({ user, analytics, onNavigateHome, onLogout }: ProfileViewProps) {
+export default function ProfileView({ user, analytics, onNavigateHome }: ProfileViewProps) {
   
   const formatDate = (isoStr: string) => {
     try {
@@ -60,15 +59,6 @@ export default function ProfileView({ user, analytics, onNavigateHome, onLogout 
             View learning streak progress, test scores, hours studied, and export backups.
           </p>
         </div>
-
-        <button
-          onClick={onLogout}
-          id="btn-profile-logout"
-          className="px-4 py-2 bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 text-rose-300 font-bold text-xs rounded-xl flex items-center gap-1.5 cursor-pointer ml-auto sm:ml-0 transition-all"
-        >
-          <LogOut className="h-3.5 w-3.5" />
-          Log Out
-        </button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-12 gap-6" id="profile-grid">

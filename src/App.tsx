@@ -20,7 +20,12 @@ import ProfileView from './components/ProfileView';
 type ViewType = 'dashboard' | 'upload' | 'chat' | 'summary' | 'quiz' | 'flashcards' | 'profile';
 
 export default function App() {
-  const [user, setUser] = useState<UserProfile | null>(null);
+  const [user, setUser] = useState<UserProfile | null>({
+    id: "default-user",
+    email: "vigneshwaran.g.s.141@kalvium.community",
+    name: "Vigneshwaran",
+    isLoggedIn: true
+  });
   const [activeView, setActiveView] = useState<ViewType>('dashboard');
   const [selectedDoc, setSelectedDoc] = useState<DocumentMetadata | null>(null);
   
@@ -30,22 +35,20 @@ export default function App() {
   const [fetchingData, setFetchingData] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // Initialize session from LocalStorage
+  // Initialize session
   useEffect(() => {
-    const cached = localStorage.getItem('ai_study_buddy_session');
-    if (cached) {
-      try {
-        const parsed = JSON.parse(cached);
-        setUser(parsed);
-      } catch (e) {
-        console.error("Failed to parse cached session:", e);
-      }
-    }
+    // Session is default pre-authenticated, optionally caching
+    localStorage.setItem('ai_study_buddy_session', JSON.stringify({
+      id: "default-user",
+      email: "vigneshwaran.g.s.141@kalvium.community",
+      name: "Vigneshwaran",
+      isLoggedIn: true
+    }));
   }, []);
 
   // Fetch documents and analytics when user changes or refetches
   const fetchWorkspaceData = async () => {
-    if (!user || !user.isLoggedIn) return;
+    if (!user) return;
     setFetchingData(true);
     try {
       // 1. Fetch Docs list
@@ -77,7 +80,7 @@ export default function App() {
   };
 
   useEffect(() => {
-    if (user && user.isLoggedIn) {
+    if (user) {
       fetchWorkspaceData();
     } else {
       setDocuments([]);
@@ -138,8 +141,8 @@ export default function App() {
 
   // Render content based on current view route
   const renderContent = () => {
-    if (!user || !user.isLoggedIn) {
-      return <LandingPage onLoginSuccess={handleLoginSuccess} />;
+    if (!user) {
+      return <div className="text-center py-12">Loading Workspace...</div>;
     }
 
     switch (activeView) {
@@ -213,7 +216,6 @@ export default function App() {
             user={user}
             analytics={analytics}
             onNavigateHome={() => navigateTo('dashboard')}
-            onLogout={handleLogout}
           />
         );
       default:
@@ -221,9 +223,13 @@ export default function App() {
     }
   };
 
-  // If user is not logged in, render Landing without structural UI wrapper
-  if (!user || !user.isLoggedIn) {
-    return <LandingPage onLoginSuccess={handleLoginSuccess} />;
+  // User is pre-authenticated under the requested layout
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-slate-950 text-slate-100 flex items-center justify-center font-sans">
+        <Loader2 className="h-8 w-8 animate-spin text-indigo-500" />
+      </div>
+    );
   }
 
   return (
@@ -292,15 +298,6 @@ export default function App() {
               >
                 {user.name ? user.name[0].toUpperCase() : 'U'}
               </button>
-              
-              <button
-                onClick={handleLogout}
-                id="btn-nav-logout"
-                title="Log out of session"
-                className="p-2 text-slate-500 hover:text-rose-400 hover:bg-rose-500/10 rounded-xl transition-colors cursor-pointer hidden sm:flex"
-              >
-                <LogOut className="h-4.5 w-4.5" />
-              </button>
 
               {/* Mobile menu trigger */}
               <button
@@ -342,12 +339,6 @@ export default function App() {
           >
             Scholar Profile
           </button>
-          <button
-            onClick={handleLogout}
-            className="w-full text-left p-3 rounded-xl block font-semibold text-xs text-rose-400 hover:bg-rose-500/10 transition-colors"
-          >
-            Log Out
-          </button>
         </div>
       )}
 
@@ -359,7 +350,7 @@ export default function App() {
       {/* Global app footer */}
       <footer className="border-t border-slate-900 py-5 text-center text-slate-600 text-[10px] bg-slate-950 mt-auto" id="app-footer">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between px-6 gap-3">
-          <p>© 2026 AI Study Buddy Workspace. Powered by serverless RAG chunk indexers & Gemini 3.5 AI flash modeling.</p>
+          <p>© 2026 AI Study Buddy Workspace. Powered by serverless RAG chunk indexers.</p>
           <div className="flex gap-4">
             <span className="hover:text-slate-400 cursor-pointer">Terms of Service</span>
             <span>•</span>
