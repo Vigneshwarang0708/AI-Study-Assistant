@@ -4,6 +4,7 @@ import {
   ChevronLeft, ChevronRight, HelpCircle, CheckCircle, RefreshCw
 } from 'lucide-react';
 import { Flashcard, DocumentMetadata } from '../types';
+import { getApiUrl } from '../utils';
 
 interface FlashcardsViewProps {
   document: DocumentMetadata;
@@ -34,7 +35,7 @@ export default function FlashcardsView({
     setIsFlipped(false);
 
     try {
-      const response = await fetch('/api/study/flashcards', {
+      const response = await fetch(getApiUrl('/api/study/flashcards'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -85,7 +86,7 @@ export default function FlashcardsView({
         prev.map((c, idx) => (idx === currentIndex ? { ...c, learned: newLearnedState } : c))
       );
 
-      const response = await fetch('/api/study/flashcards/update', {
+      const response = await fetch(getApiUrl('/api/study/flashcards/update'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

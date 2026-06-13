@@ -5,6 +5,7 @@ import {
   Award, RefreshCw, BarChart2, Info
 } from 'lucide-react';
 import { QuizQuestion, DocumentMetadata } from '../types';
+import { getApiUrl } from '../utils';
 
 interface QuizViewProps {
   document: DocumentMetadata;
@@ -41,7 +42,7 @@ export default function QuizView({ document, userEmail, onNavigateHome, onQuizCo
     setBlankInput('');
 
     try {
-      const response = await fetch('/api/study/quiz', {
+      const response = await fetch(getApiUrl('/api/study/quiz'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -116,7 +117,7 @@ export default function QuizView({ document, userEmail, onNavigateHome, onQuizCo
   const submitScore = async () => {
     setPostingStats(true);
     try {
-      const response = await fetch('/api/study/quiz/score', {
+      const response = await fetch(getApiUrl('/api/study/quiz/score'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

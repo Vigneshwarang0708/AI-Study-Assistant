@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { UploadCloud, FileText, Loader2, ArrowLeft, ShieldAlert, CheckCircle, BrainCircuit } from 'lucide-react';
 import { DocumentMetadata } from '../types';
+import { getApiUrl } from '../utils';
 
 interface UploadViewProps {
   onUploadSuccess: (newDoc: DocumentMetadata) => void;
@@ -36,7 +37,7 @@ export default function UploadView({ onUploadSuccess, onNavigateHome, userEmail 
     }
 
     if (file.size > 50 * 1024 * 1024) {
-      setError("File is too large. The free hackathon tier limits PDF uploads to 50 MB.");
+      setError("File is too large. PDF uploads are capped at 50 MB.");
       return;
     }
 
@@ -51,7 +52,7 @@ export default function UploadView({ onUploadSuccess, onNavigateHome, userEmail 
       setTimeout(() => setProgressText('Extracting PDF texts & structural pages...'), 1200);
       setTimeout(() => setProgressText('Building semantic chunking map for RAG query indexing...'), 2600);
 
-      const response = await fetch('/api/docs/upload', {
+      const response = await fetch(getApiUrl('/api/docs/upload'), {
         method: 'POST',
         headers: {
           'user-email': userEmail,

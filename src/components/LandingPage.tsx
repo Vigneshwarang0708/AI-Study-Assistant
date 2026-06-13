@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { BookOpen, BrainCircuit, Sparkles, FileText, CheckCircle, ShieldAlert, GraduationCap, ArrowRight, Activity, Zap } from 'lucide-react';
 import { UserProfile } from '../types';
+import { getApiUrl } from '../utils';
 
 interface LandingPageProps {
   onLoginSuccess: (user: UserProfile) => void;
@@ -19,7 +20,7 @@ export default function LandingPage({ onLoginSuccess }: LandingPageProps) {
     setError('');
     setLoading(true);
 
-    const url = isLogin ? '/api/auth/login' : '/api/auth/signup';
+    const url = getApiUrl(isLogin ? '/api/auth/login' : '/api/auth/signup');
     const payload = isLogin ? { email, password } : { email, password, name };
 
     try {
@@ -54,7 +55,7 @@ export default function LandingPage({ onLoginSuccess }: LandingPageProps) {
     setLoading(true);
     setError('');
     try {
-      const response = await fetch('/api/auth/google', {
+      const response = await fetch(getApiUrl('/api/auth/google'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -157,9 +158,6 @@ export default function LandingPage({ onLoginSuccess }: LandingPageProps) {
 
         {/* Authentication forms */}
         <div className="lg:col-span-5 bg-slate-800/40 backdrop-blur-md rounded-3xl border border-slate-700/50 p-8 shadow-2xl relative" id="landing-auth-card">
-          <div className="absolute -top-4 right-8 bg-indigo-600 text-xs font-bold text-white px-3 py-1 rounded-full uppercase tracking-wider flex items-center gap-1 shadow-lg shadow-indigo-500/30">
-            <Zap className="h-3 w-3" /> Hackathon Edition
-          </div>
 
           <div className="flex border-b border-slate-700 mb-6" id="auth-tabs">
             <button
@@ -292,7 +290,7 @@ export default function LandingPage({ onLoginSuccess }: LandingPageProps) {
       {/* Footer */}
       <footer className="border-t border-slate-800 py-6 px-6 text-center text-slate-500 text-xs bg-slate-950 mt-auto" id="landing-footer">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p>© 2026 AI Study Buddy. Built for global hackathon. All rights reserved.</p>
+          <p>© 2026 AI Study Buddy. All rights reserved.</p>
           <div className="flex space-x-4">
             <span className="hover:text-slate-400 cursor-pointer">Security</span>
             <span className="hover:text-slate-400 cursor-pointer">Supabase Stack</span>

@@ -4,6 +4,7 @@ import {
   HelpCircle, ChevronRight, FileText, Loader2, Info, ListChecks, Code, Database, AlertTriangle
 } from 'lucide-react';
 import { StudySummary, DocumentMetadata } from '../types';
+import { getApiUrl } from '../utils';
 
 interface SummaryViewProps {
   document: DocumentMetadata;
@@ -23,7 +24,7 @@ export default function SummaryView({ document, userEmail, onNavigateHome }: Sum
     setLoading(true);
     setErrorError('');
     try {
-      const response = await fetch('/api/study/summarize', {
+      const response = await fetch(getApiUrl('/api/study/summarize'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -18,6 +18,17 @@ dns.setDefaultResultOrder("ipv4first");
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 
+// Enable CORS middleware for external deployments (e.g. Vercel)
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, user-email");
+  res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(200);
+  }
+  next();
+});
+
 // Configure Upload Middleware (limit to 50MB)
 const upload = multer({
   limits: { fileSize: 50 * 1024 * 1024 },

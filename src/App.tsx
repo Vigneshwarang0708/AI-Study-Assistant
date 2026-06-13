@@ -5,6 +5,7 @@ import {
   User, Menu, X, HelpCircle, Loader2, RefreshCw
 } from 'lucide-react';
 import { DocumentMetadata, LearningAnalytics, UserProfile } from './types';
+import { getApiUrl } from './utils';
 
 // Import sub-components
 import LandingPage from './components/LandingPage';
@@ -48,7 +49,7 @@ export default function App() {
     setFetchingData(true);
     try {
       // 1. Fetch Docs list
-      const docsRes = await fetch('/api/docs', {
+      const docsRes = await fetch(getApiUrl('/api/docs'), {
         headers: {
           'user-email': user.email
         }
@@ -59,7 +60,7 @@ export default function App() {
       }
 
       // 2. Fetch Analytics
-      const analyticsRes = await fetch('/api/study/analytics', {
+      const analyticsRes = await fetch(getApiUrl('/api/study/analytics'), {
         headers: {
           'user-email': user.email
         }
@@ -100,7 +101,7 @@ export default function App() {
   const handleDeleteDoc = async (docId: string) => {
     if (!user) return;
     try {
-      const response = await fetch(`/api/docs/${docId}`, {
+      const response = await fetch(getApiUrl(`/api/docs/${docId}`), {
         method: 'DELETE',
         headers: {
           'user-email': user.email

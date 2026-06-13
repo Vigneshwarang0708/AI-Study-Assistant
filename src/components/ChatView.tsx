@@ -4,6 +4,7 @@ import {
   VolumeX, HelpCircle, Loader2, BookOpen, AlertCircle, FileText
 } from 'lucide-react';
 import { ChatMessage, DocumentMetadata } from '../types';
+import { getApiUrl } from '../utils';
 
 interface ChatViewProps {
   document: DocumentMetadata;
@@ -109,7 +110,7 @@ export default function ChatView({ document, userEmail, onNavigateHome }: ChatVi
     setLoading(true);
 
     try {
-      const response = await fetch('/api/study/chat', {
+      const response = await fetch(getApiUrl('/api/study/chat'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -165,7 +166,7 @@ export default function ChatView({ document, userEmail, onNavigateHome }: ChatVi
     setPlayingId(messageId);
 
     try {
-      const response = await fetch('/api/study/voice-tts', {
+      const response = await fetch(getApiUrl('/api/study/voice-tts'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ text: textToSpeak })
